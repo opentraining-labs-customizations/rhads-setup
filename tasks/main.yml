@@ -11,3 +11,23 @@
 
 - name: Install community.kubernetes collection
   ansible.builtin.command: ansible-galaxy collection install community.kubernetes
+
+- name: OpenShift Access Data
+  when: cloud_provider == 'openshift_cnv'
+  vars:
+    _bastion_inventory_name: "{{ groups['bastions'][0] }}"
+  agnosticd_user_info:
+    user: "{{ ocp4_workload_authentication_htpasswd_user_base }}{{ item }}"
+    data:
+      bastion_public_hostname: "{{ openshift_cnv_ssh_address }}"
+      bastion_ssh_port: "{{ hostvars[groups['bastions'][0]].bastion_ssh_port }}"
+      bastion_ssh_user_name: "{{ ocp4_workload_authentication_htpasswd_user_base }}{{ item }}"
+      bastion_ssh_password: "{{ common_user_password }}"
+      cloud_provider: "{{ cloud_provider }}"
+      openshift_api_url: "{{ openshift_api_url }}"
+      ocp4_installer_version: "{{ ocp4_installer_version }}"
+  loop: "{{ range(1, num_users + 1) | list }}"
+
+- name: Deploy Showroom
+  ansible.builtin.include_role:
+    name: ocp4_workload_showroom
