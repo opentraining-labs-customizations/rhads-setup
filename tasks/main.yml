@@ -18,4 +18,6 @@
     data:
       openshift_cluster_ingress_domain: "{{ openshift_cluster_ingress_domain }}"
       openshift_console_url: "{{ openshift_console_url }}"
-      openshift_user: user1
+      openshift_password: "{{ openshift_password }}"
+      openshift_user: "{{ openshift_user }}"
+      openshift_user_admin: "{{ openshift_user_admin }}"
