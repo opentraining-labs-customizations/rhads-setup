@@ -1,3 +1,1 @@
----
-# defaults file for rhads-setup
-ansible_python_interpreter: /usr/libexec/platform-python
+
